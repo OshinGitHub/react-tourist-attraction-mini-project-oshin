@@ -1,9 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { doNothing } from '../constants/helpers'
 import LocationCard from './LocationCard'
 
-export default function LocationsList({ locations = [] }) {
-  // console.log('props', props.locations)
+export default function NewLocationsList({
+  locations = [],
+  onSetSearchText = doNothing
+}) {
   return (
     <ul
       css={css`
@@ -21,7 +24,10 @@ export default function LocationsList({ locations = [] }) {
               list-style: none;
             `}
           >
-            <LocationCard location={location} />
+            <LocationCard
+              location={location}
+              onSetSearchText={onSetSearchText}
+            />
           </li>
         )
       })}

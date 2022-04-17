@@ -1,8 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { headerHeight } from '../constants/css-value'
+import { doNothing } from '../constants/helpers'
 
-export default function NewSearchBox() {
+export default function NewSearchBox(props) {
+  const { searchText, onSetSearchText = doNothing } = props
+  /**
+   * @param { React.ChangeEvent<HTMLInputElement> } e
+   */
+  function handleChangeSearchText(e) {
+    console.log('text', e.target.value)
+    onSetSearchText(e.target.value)
+  }
+
   return (
     <header
       css={css`
@@ -10,7 +20,7 @@ export default function NewSearchBox() {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 150px; /*${headerHeight}*/
+        height: ${headerHeight};
         width: auto;
       `}
     >
@@ -29,7 +39,13 @@ export default function NewSearchBox() {
             width: 700px;
           `}
         >
-          <label>ค้นหาที่เที่ยว</label>
+          <label
+            css={css`
+              font-size: 12px;
+            `}
+          >
+            ค้นหาที่เที่ยว
+          </label>
           <input
             className="InputHeader"
             placeholder="หาที่เที่ยวแล้วไปกัน ..."
@@ -40,12 +56,17 @@ export default function NewSearchBox() {
               background: none;
               width: 700px;
               height: 25px;
+              border-bottom: #bfbfbf 1px solid;
               ::placeholder {
                 color: #bfbfbf;
               }
+              :focus {
+                outline: none;
+              }
             `}
-          ></input>
-          <hr></hr>
+            value={searchText}
+            onChange={handleChangeSearchText}
+          />
         </div>
       </div>
     </header>

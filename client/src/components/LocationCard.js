@@ -1,26 +1,38 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import React from 'react'
+import { doNothing } from '../constants/helpers'
 
 const LocationCard = (props) => {
-  const { location = {} } = props
+  const { location = {}, onSetSearchText = doNothing } = props
 
   /**
    * @param { Array<string> } categoryTags
    * @return { JSX.Element }
    */
   function renderCategoryTags(categoryTags) {
-    const categoryButtons = categoryTags.map((tag) => {
+    const categoryButtons = categoryTags.map((tag, idx) => {
       return (
         <button
-          key={tag}
+          key={idx}
           css={css`
             background-color: transparent;
             border: 0;
-            color: lightgrey;
+            color: inherit;
             cursor: pointer;
             text-decoration: underline;
+            font-size: inherit;
           `}
+          onClick={() => {
+            onSetSearchText((previousValue) => {
+              const arrayOfSearchTags = previousValue
+                ? previousValue.split(', ')
+                : []
+              const setOfSearchTags = new Set([...arrayOfSearchTags, tag])
+              const resultArrayTags = Array.from(setOfSearchTags)
+              const resultSearchText = resultArrayTags.join(', ')
+              return resultSearchText
+            })
+          }}
         >
           {tag}
         </button>
@@ -34,14 +46,14 @@ const LocationCard = (props) => {
           display: flex;
           column-gap: 8px;
           color: lightgrey;
+          font-size: 12px;
+          color: #aeaeae;
         `}
       >
         หมวดหมู่ {categoryButtons}
       </div>
     )
   }
-
-  // console.dir(renderCategoryTags(location.tags))
 
   return (
     <div
@@ -106,12 +118,13 @@ const LocationCard = (props) => {
           {location.photos?.slice(1).map((photo) => {
             return (
               <img
+                key={photo}
                 alt={photo}
                 src={photo}
                 css={css`
                   border-radius: 10px;
-                  width: 50px;
-                  height: 50px;
+                  width: 55px;
+                  height: 55px;
                   margin-top: 10px;
                 `}
               />
