@@ -68,9 +68,10 @@ const LocationCard = (props) => {
         alt={location.title}
         src={location.photos?.[0]}
         css={css`
-          width: 30%;
-          height: 100%;
+          width: 300px;
+          height: 300px;
           border-radius: 10px;
+          object-fit: cover;
         `}
       />
       <div>
